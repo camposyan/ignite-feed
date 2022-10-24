@@ -1,6 +1,6 @@
 import { format, formatDistanceToNow } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, InvalidEvent, useState } from 'react';
 
 import { Avatar } from './Avatar';
 import { Comment } from './Comment';
@@ -8,22 +8,22 @@ import { Comment } from './Comment';
 import styles from './Post.module.css';
 
 interface Content {
-    type: string,
-    content: string
+    type: 'paragraph' | 'link';
+    content: string;
 }
 
 interface PostProps {
     author: {
-        avatarUrl: string,
-        name: string,
-        role: string
+        avatarUrl: string;
+        name: string;
+        role: string;
     },
-    content: Content[],
-    publishedAt: Date
+    content: Content[];
+    publishedAt: Date;
 }
 
 export function Post({ author, publishedAt, content }:PostProps) {
-    const [comments, setComments] = useState<string[]>([
+    const [comments, setComments] = useState([
         'Post muito bacana, hein?!'
     ])
 
@@ -38,7 +38,7 @@ export function Post({ author, publishedAt, content }:PostProps) {
         addSuffix: true
     })
 
-    function handleCreateNewComment() {
+    function handleCreateNewComment(event: FormEvent) {
         event.preventDefault();
 
 
@@ -46,12 +46,12 @@ export function Post({ author, publishedAt, content }:PostProps) {
         setNewCommentText('');
     }
 
-    function handleNewCommentChange() {
+    function handleNewCommentChange(event: ChangeEvent<HTMLTextAreaElement>) {
         event.target.setCustomValidity('')
         setNewCommentText(event.target.value);
     }
 
-    function handleNewCommentInvalid() {
+    function handleNewCommentInvalid(event: InvalidEvent<HTMLTextAreaElement>) {
         event.target.setCustomValidity('Esse campo é obrigatório.')
     }
 
@@ -72,6 +72,7 @@ export function Post({ author, publishedAt, content }:PostProps) {
                     <Avatar
                         hasBorder
                         src={author.avatarUrl}
+                        alt=""
                     />
                     <div className={styles.authorInfo}>
                         <strong>{author.name}</strong>

@@ -4,8 +4,8 @@ import { Avatar } from './Avatar';
 import { useState } from 'react';
 
 interface CommentProps {
-    content: string
-    onDeleteComment: Function
+    content: string;
+    onDeleteComment: (comment: string) => void;
 }
 
 export function Comment({ content, onDeleteComment }:CommentProps) {
@@ -26,6 +26,7 @@ export function Comment({ content, onDeleteComment }:CommentProps) {
             <Avatar
                 hasBorder={false}
                 src="https://github.com/camposyan.png"
+                alt=""
             />
 
             <div className={styles.commentBox}>
